@@ -1,0 +1,23 @@
+{
+  "name": "mailserver1",
+  "description": "dep for mail",
+  "main": "app.js",
+  "authors": [
+    "kallko <kallko_andrey@yahoo.co.uk>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "mail"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.0"
+  }
+}
