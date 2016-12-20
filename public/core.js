@@ -1,7 +1,7 @@
 var mail = angular.module('mailServer', []);
 
 function viewArchiveController($scope, $http) {
-
+    $scope.newEmail = false;
     $scope.auth = true;
     $scope.user = '';
     $scope.pass = '';
@@ -47,6 +47,7 @@ function viewArchiveController($scope, $http) {
         $scope.currentEmail.to = '';
         $scope.currentEmail.subj = '';
         $scope.currentEmail.body = '';
+        $scope.newEmail = false;
     };
 
     $scope.deleteEmail = function (mail){
@@ -62,6 +63,7 @@ function viewArchiveController($scope, $http) {
         $scope.currentEmail.to = email.mail.to;
         $scope.currentEmail.body = email.mail.text;
         $scope.isPopupVisible = true;
+        $scope.newEmail = false;
     };
 
 
@@ -71,11 +73,12 @@ function viewArchiveController($scope, $http) {
         $scope.currentEmail.to = '';
         $scope.currentEmail.subj = '';
         $scope.currentEmail.body = '';
-
+        $scope.newEmail = true;
 
     };
 
     $scope.sendEmail = function(){
+        $scope.newEmail = false;
         if (!checkEmailSpelling($scope.currentEmail.to)){
             alert("Check address spelling, pls");
             return;
