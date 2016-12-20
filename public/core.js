@@ -1,10 +1,8 @@
-var mail = angular.module('mailServer', []);
+var mail = angular.module('scrapServer', []);
 
-function viewArchiveController($scope, $http) {
-    $scope.newEmail = false;
-    $scope.auth = true;
-    $scope.user = '';
-    $scope.pass = '';
+function scrapperController($scope, $http) {
+    $scope.address = '';
+
 
     var socket = io('http://localhost:3000/');
     socket.on('connect',function(){
@@ -15,101 +13,26 @@ function viewArchiveController($scope, $http) {
         console.log("Соединение установлено.");
     };
 
-    socket.on('sendMail', function (event) {
-        console.log("SendMailEvent", event);
-    });
 
-    socket.on('login', function (event) {
-
-        $scope.mails = event || [];
-
-        if (typeof (event) == 'object') {
-            $scope.auth = false;
-        } else {
-            $scope.user = '';
-            $scope.pass = '';
-            alert("Pass incorrect");
+    $scope.scrap = function (address){
+        if  ($scope.address.length == 0) {
+            alert("The field url is empty!" +'\n' +'\n' + 'Input correct link, please.');
+            return;
         }
-        $scope.$apply();
-    });
-
-    $scope.isPopupVisible = false;
-
-
-    $scope.login = function (user, pass){
-        socket.emit('login', user, pass);
-    };
-
-
-    $scope.closeEmail = function(){
-        $scope.isPopupVisible = false;
-        $scope.currentEmail = {};
-        $scope.currentEmail.to = '';
-        $scope.currentEmail.subj = '';
-        $scope.currentEmail.body = '';
-        $scope.newEmail = false;
-    };
-
-    $scope.deleteEmail = function (mail){
-        socket.emit('deleteMail', mail.date);
-        $scope.mails = $scope.mails.filter(function(item){
-            return item != mail;
-        })
-    };
-
-    $scope.showEmail = function(email) {
-        $scope.currentEmail = {};
-        $scope.currentEmail.subj = email.mail.subj;
-        $scope.currentEmail.to = email.mail.to;
-        $scope.currentEmail.body = email.mail.text;
-        $scope.isPopupVisible = true;
-        $scope.newEmail = false;
-    };
-
-
-    $scope.createNewEmail = function(){
-        $scope.currentEmail = {};
-        $scope.isPopupVisible = true;
-        $scope.currentEmail.to = '';
-        $scope.currentEmail.subj = '';
-        $scope.currentEmail.body = '';
-        $scope.newEmail = true;
-
-    };
-
-    $scope.sendEmail = function(){
-        $scope.newEmail = false;
-        if (!checkEmailSpelling($scope.currentEmail.to)){
-            alert("Check address spelling, pls");
+        if(!isUrlValid(address)) {
+            alert("Check url spelling and try again");
             return;
         }
 
-        if ($scope.currentEmail.subj.length == 0 ||
-            $scope.currentEmail.body.length == 0) {
-            if  (!confirm('You dont fill subject or text. Send anyway? ')) return;
-
-        }
-
-        $scope.isPopupVisible = false;
-        var mail = {
-            "to": $scope.currentEmail.to,
-            "subj": $scope.currentEmail.subj,
-            "text": $scope.currentEmail.body
-        };
-
-        var date = Date.now();
-        var email = {
-            "mail" : mail,
-            "date" : date
-        };
-
-        $scope.mails.push(email);
-        socket.emit('sendMail', $scope.user, $scope.pass, mail);
+        socket.emit('scrap', address);
     };
 
-    function  checkEmailSpelling(address) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(address);
+
+    function isUrlValid(address) {
+        var res = address.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        return res
     }
+
+
 
 }

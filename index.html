@@ -1,14 +1,14 @@
 
 <!doctype html>
 
-<html ng-app="mailServer">
+<html ng-app="scrapServer">
 <head>
 
     <meta charset="utf-8">
-    <title>MailServer </title>
+    <title>Scrap Server </title>
 
 
-    <link rel="stylesheet" type="text/css"  href='/stylesheets/style.css')>
+    <link rel="stylesheet" type="text/css"  href='/stylesheets/style.css'>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
@@ -17,57 +17,56 @@
 
 </head>
 
-<body ng-controller="viewArchiveController">
+<body ng-controller="scrapperController">
 <div ng-show="auth">
     <form>
-        <input type="text" class = "element-middle" placeholder="user" style="width:15%;" ng-model="user"/><br />
-        <input type="text" class = "element-middle" placeholder="password" style="width:15%;" ng-model="pass"/>
-        <button ng-click = "login(user, pass)" class="element-button element-grey element-middle">Login</button>
+        <input type="text" class = "element-middle" placeholder="http://" style="width:25%;" ng-model="address"/>
+        <button ng-click = "scrap(address)" class="element-button element-grey element-middle">Scrapp, please!</button>
     </form>
 </div>
 
-<div class="container" ng-show="!auth" style="padding-top:5px;">
-    <div style="padding-left: 0px; padding-bottom: 10px; padding-top: 10px">
-        <button ng-click="createNewEmail()" class="element-button element-green element-middle">Create new Email</button>
-    </div>
+<!--<div class="container" ng-show="!auth" style="padding-top:5px;">-->
+    <!--<div style="padding-left: 0px; padding-bottom: 10px; padding-top: 10px">-->
+        <!--<button ng-click="createNewEmail()" class="element-button element-green element-middle">Create new Email</button>-->
+    <!--</div>-->
 
-    <table border="1" class = "element-middle">
-        <tr>
-            <th> Date </th>
-            <th> To </th>
-            <th> Subject </th>
-            <th> Action </th>
-        </tr>
-        <tr ng-repeat="mail in mails | orderBy:'-date'"  >
-            <td> {{mail.date | date :  "short"}} </td>
-            <td> {{mail.mail.to}} </td>
-            <td> {{mail.mail.subj}} </td>
-            <td >
-                <button ng-click="showEmail(mail)" class="element-blue element-small"> View </button>
-                <button ng-click="deleteEmail(mail)" class="element-red element-small"> Delete </button>
-            </td>
-        </tr>
+    <!--<table border="1" class = "element-middle">-->
+        <!--<tr>-->
+            <!--<th> Date </th>-->
+            <!--<th> To </th>-->
+            <!--<th> Subject </th>-->
+            <!--<th> Action </th>-->
+        <!--</tr>-->
+        <!--<tr ng-repeat="mail in mails | orderBy:'-date'"  >-->
+            <!--<td> {{mail.date | date :  "short"}} </td>-->
+            <!--<td> {{mail.mail.to}} </td>-->
+            <!--<td> {{mail.mail.subj}} </td>-->
+            <!--<td >-->
+                <!--<button ng-click="showEmail(mail)" class="element-blue element-small"> View </button>-->
+                <!--<button ng-click="deleteEmail(mail)" class="element-red element-small"> Delete </button>-->
+            <!--</td>-->
+        <!--</tr>-->
 
-    </table>
+    <!--</table>-->
 
 
-    <div class="modal" ng-show = "isPopupVisible">
-        <div class="modal-header">
-            <h3>Новый Email</h3>
-        </div>
-        <div class="modal-body">
-            <form>
-                <input type="text" class = "element-middle" placeholder="To" style="width:95%;" ng-model="currentEmail.to" ng-disabled="!newEmail"/><br />
-                <input type="text" class = "element-middle" placeholder="Subject" style="width:95%;" ng-model="currentEmail.subj" ng-disabled="!newEmail"/><br />
-                <textarea style="width:95%;" class = "element-middle" rows="10" ng-model="currentEmail.body" ng-disabled="!newEmail">{{currentEmail.body}}</textarea>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" ng-click="closeEmail()">Close</a>
-            <a href="#" class="btn btn-primary" ng-click="sendEmail()" ng-show="newEmail">Send</a>
-        </div>
-    </div>
-</div>
+    <!--<div class="modal" ng-show = "isPopupVisible">-->
+        <!--<div class="modal-header">-->
+            <!--<h3>Новый Email</h3>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+            <!--<form>-->
+                <!--<input type="text" class = "element-middle" placeholder="To" style="width:95%;" ng-model="currentEmail.to" ng-disabled="!newEmail"/><br />-->
+                <!--<input type="text" class = "element-middle" placeholder="Subject" style="width:95%;" ng-model="currentEmail.subj" ng-disabled="!newEmail"/><br />-->
+                <!--<textarea style="width:95%;" class = "element-middle" rows="10" ng-model="currentEmail.body" ng-disabled="!newEmail">{{currentEmail.body}}</textarea>-->
+            <!--</form>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+            <!--<a href="#" class="btn" ng-click="closeEmail()">Close</a>-->
+            <!--<a href="#" class="btn btn-primary" ng-click="sendEmail()" ng-show="newEmail">Send</a>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 </body>
 </html>
 
